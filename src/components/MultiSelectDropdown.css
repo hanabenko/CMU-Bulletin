@@ -1,0 +1,56 @@
+.multi-select-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-toggle {
+  background-color: #f0f0f0; /* Light gray background */
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #333; /* Dark gray text */
+}
+
+.dropdown-toggle:hover {
+  background-color: #e0e0e0; /* Slightly darker gray on hover */
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: #fff; /* White background */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  overflow-y: auto;
+  color: #333; /* Dark gray text */
+}
+
+.dropdown-menu label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 3px;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.dropdown-menu label:hover {
+  background-color: var(--primary-color); /* CMU Red on hover */
+  color: white; /* White text on hover */
+}
+
+.dropdown-menu input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--primary-color); /* Keep checkbox accent color CMU Red */
+}
