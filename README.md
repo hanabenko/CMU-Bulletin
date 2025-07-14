@@ -1,4 +1,4 @@
-# CMU Bulletin 🚀
+# CMU Bulletin ✨
 
 Your one-stop shop for everything happening at Carnegie Mellon. Never miss an event on campus again.
 
@@ -6,14 +6,14 @@ Your one-stop shop for everything happening at Carnegie Mellon. Never miss an ev
 
 ---
 
-### ✨ Features
+### Features
 
 - **Discover:** A beautiful, filterable grid of event posters.
 - **Share:** Upload your own posters in seconds.
 - **Save:** Like events to keep them on your personal profile.
 - **Engage:** Click any poster for a full-screen detailed view.
 
-### 🛠️ Tech Stack
+### Tech Stack
 
 - **Frontend:** React & Vite
 - **Backend & Hosting:** Firebase (Auth, Firestore, Storage, Hosting)
