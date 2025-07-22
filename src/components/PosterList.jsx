@@ -107,10 +107,14 @@ function PosterList({ filterDate, filterLocations, filterTags, searchQuery, user
 
       const uploaderIds = [...new Set(postersData.map(p => p.uploaded_by))];
       const names = {};
-      for (const id of uploaderIds) {
-        const userDoc = await getDoc(doc(db, 'users', id));
-        if (userDoc.exists()) {
-          names[id] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+      for (const poster of postersData) {
+        if (poster.organizer) {
+          names[poster.id] = poster.organizer;
+        } else if (poster.uploaded_by && !names[poster.uploaded_by]) {
+          const userDoc = await getDoc(doc(db, 'users', poster.uploaded_by));
+          if (userDoc.exists()) {
+            names[poster.uploaded_by] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+          }
         }
       }
       setUploaderNames(names);

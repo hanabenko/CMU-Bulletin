@@ -32,6 +32,7 @@ function Auth() {
         email,
       });
     } catch (err) {
+      console.error("Firebase Auth Error:", err);
       setError(err.message);
     }
   };
@@ -41,6 +42,7 @@ function Auth() {
       setError(null);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (err) {
+      console.error("Firebase Auth Error:", err);
       setError(err.message);
     }
   };

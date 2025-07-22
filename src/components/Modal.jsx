@@ -32,7 +32,7 @@ function Modal({ poster, onClose, user, likedPosters, handleLikeToggle, uploader
           </div>
           <div className="modal-details-container">
             <h2>{poster.title}</h2>
-            <p><strong>Uploaded by:</strong> {uploaderName || 'Unknown'}</p>
+            <p><strong>{poster.organizer ? 'Organizer:' : 'Uploaded by:'}</strong> {poster.organizer || uploaderName || 'Unknown'}</p>
             <p>{poster.description}</p>
             {!poster.repeating && poster.single_event_date && (
               <p><strong>Date:</strong> {poster.single_event_date}</p>

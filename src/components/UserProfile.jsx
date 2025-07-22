@@ -34,10 +34,14 @@ function UserProfile() {
 
         const uploaderIds = [...new Set(postsData.map(p => p.uploaded_by))];
         const names = {};
-        for (const id of uploaderIds) {
-          const userDoc = await getDoc(doc(db, 'users', id));
-          if (userDoc.exists()) {
-            names[id] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+        for (const poster of postsData) {
+          if (poster.organizer) {
+            names[poster.id] = poster.organizer;
+          } else if (poster.uploaded_by && !names[poster.uploaded_by]) {
+            const userDoc = await getDoc(doc(db, 'users', poster.uploaded_by));
+            if (userDoc.exists()) {
+              names[poster.uploaded_by] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+            }
           }
         }
         setUploaderNames(names);
@@ -57,10 +61,14 @@ function UserProfile() {
 
         const uploaderIds = [...new Set(fetchedLikedPosters.map(p => p.uploaded_by))];
         const names = {};
-        for (const id of uploaderIds) {
-          const userDoc = await getDoc(doc(db, 'users', id));
-          if (userDoc.exists()) {
-            names[id] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+        for (const poster of fetchedLikedPosters) {
+          if (poster.organizer) {
+            names[poster.id] = poster.organizer;
+          } else if (poster.uploaded_by && !names[poster.uploaded_by]) {
+            const userDoc = await getDoc(doc(db, 'users', poster.uploaded_by));
+            if (userDoc.exists()) {
+              names[poster.uploaded_by] = `${userDoc.data().firstName} ${userDoc.data().lastName}`;
+            }
           }
         }
         setUploaderNames(prevNames => ({ ...prevNames, ...names }));
@@ -176,7 +184,7 @@ function UserProfile() {
                 <img src={poster.image_url} alt={poster.title} />
                 <div className="poster-card-content">
                   <h4>{poster.title}</h4>
-                  <p><strong>Posted by:</strong> {uploaderNames[poster.uploaded_by] || 'Unknown'}</p>
+                  <p><strong>{poster.organizer ? 'Organizer:' : 'Posted by:'}</strong> {poster.organizer || uploaderNames[poster.uploaded_by] || 'Unknown'}</p>
                   <p>{poster.description}</p>
                   <button onClick={(e) => {e.stopPropagation(); handleEditPost(poster.id)}} className="btn">Edit</button>
                   <button onClick={(e) => {e.stopPropagation(); handleDeletePost(poster.id)}} className="btn" style={{ marginLeft: '10px', backgroundColor: '#dc3545' }}>Delete</button>
@@ -196,7 +204,7 @@ function UserProfile() {
                 <img src={poster.image_url} alt={poster.title} />
                 <div className="poster-card-content">
                   <h4>{poster.title}</h4>
-                  <p><strong>Posted by:</strong> {uploaderNames[poster.uploaded_by] || 'Unknown'}</p>
+                  <p><strong>{poster.organizer ? 'Organizer:' : 'Posted by:'}</strong> {poster.organizer || uploaderNames[poster.uploaded_by] || 'Unknown'}</p>
                   <p>{poster.description}</p>
                 </div>
               </div>
