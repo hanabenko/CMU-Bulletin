@@ -1,14 +1,14 @@
-// src/components/Navbar.jsx
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { auth } from '../firebase';
 import { signOut } from 'firebase/auth';
 import MultiSelectDropdown from './MultiSelectDropdown';
 
-function Navbar({ onAuthClick, onPostClick, user, activeCategory, filterDate, setFilterDate, filterLocations, setFilterLocations, filterTags, setFilterTags, searchQuery, setSearchQuery, availableTags }) {
+function Navbar({ user, activeCategory, filterDate, setFilterDate, filterLocations, setFilterLocations, filterTags, setFilterTags, searchQuery, setSearchQuery, availableTags }) {
   const [searchInput, setSearchInput] = useState('');
   const location = useLocation();
   const isProfilePage = location.pathname === '/profile';
+  const isAuthPage = location.pathname === '/auth';
 
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
@@ -40,16 +40,16 @@ function Navbar({ onAuthClick, onPostClick, user, activeCategory, filterDate, se
         <div>
           {user ? (
             <>
-              <button onClick={onPostClick} className="btn" style={{ marginRight: '10px' }}>Post</button>
+              <Link to="/post" className="btn" style={{ marginRight: '10px' }}>Post</Link>
               <Link to="/profile" className="btn">Profile</Link>
             </>
           ) : (
-            <button onClick={onAuthClick} className="btn">Sign In</button>
+            <Link to="/auth" className="btn">Sign In</Link>
           )}
         </div>
       </div>
 
-      {!isProfilePage && (
+      {!isProfilePage && !isAuthPage && (
         <div className="category-bar">
           {categories.map(cat => (
             <Link 
@@ -63,7 +63,7 @@ function Navbar({ onAuthClick, onPostClick, user, activeCategory, filterDate, se
         </div>
       )}
 
-      {!isProfilePage && (
+      {!isProfilePage && !isAuthPage && (
         <div className="filter-bar">
           <input type="date" value={filterDate} onChange={e => setFilterDate(e.target.value)} />
           <MultiSelectDropdown

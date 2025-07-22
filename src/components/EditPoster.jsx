@@ -182,6 +182,7 @@ function EditPoster() {
         tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag !== ''),
         repeating,
         image_filename: `${title.split(' ')[0] || 'untitled'}.png`,
+        sort_date: repeating ? nextOccurringDate : singleEventDate,
       };
 
       if (image) {

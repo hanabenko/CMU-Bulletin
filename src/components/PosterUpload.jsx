@@ -137,6 +137,7 @@ function PosterUpload({ user }) {
         repeating,
         created_at: Timestamp.now(),
         image_filename: `${title.split(' ')[0] || 'untitled'}.png`, // Add the new filename field
+        sort_date: repeating ? nextOccurringDate : singleEventDate,
       };
 
       if (repeating) {

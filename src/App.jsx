@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -13,8 +12,6 @@ import Footer from './components/Footer';
 
 function App() {
   const [user, setUser] = useState(null);
-  const [showAuth, setShowAuth] = useState(false);
-  const [showPosterUploadForm, setShowPosterUploadForm] = useState(false);
   const [filterDate, setFilterDate] = useState('');
   const [filterLocations, setFilterLocations] = useState([]);
   const [filterTags, setFilterTags] = useState([]);
@@ -25,9 +22,6 @@ function App() {
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
-      if (currentUser) {
-        setShowAuth(false); // Hide auth form if user logs in
-      }
     });
 
     const unsubscribePosters = onSnapshot(collection(db, 'posters'), (snapshot) => {
@@ -61,24 +55,12 @@ function App() {
     };
   }, []);
 
-  const toggleAuthVisibility = () => {
-    setShowAuth(!showAuth);
-    setShowPosterUploadForm(false); // Hide upload form if auth form is shown
-  };
-
-  const togglePosterUploadForm = () => {
-    setShowPosterUploadForm(!showPosterUploadForm);
-    setShowAuth(false); // Hide auth form if upload form is shown
-  };
-
   const activeCategory = location.pathname.substring(1) || 'All';
   const isProfilePage = location.pathname === '/profile' || location.pathname.startsWith('/edit-poster');
 
   return (
     <div>
       <Navbar 
-        onAuthClick={toggleAuthVisibility} 
-        onPostClick={togglePosterUploadForm} 
         user={user} 
         activeCategory={activeCategory}
         filterDate={filterDate}
@@ -92,11 +74,11 @@ function App() {
         availableTags={availableTags}
       />
       <main className="container" style={{ paddingTop: isProfilePage ? '0' : '30px' }}>
-        {!user && showAuth && <Auth />}
-        {user && showPosterUploadForm && <PosterUpload user={user} />}
         <Routes>
-          <Route path="/:category" element={<PosterList filterDate={filterDate} filterLocations={filterLocations} filterTags={filterTags} searchQuery={searchQuery} user={user} />} />
           <Route path="/" element={<PosterList filterDate={filterDate} filterLocations={filterLocations} filterTags={filterTags} searchQuery={searchQuery} user={user} />} />
+          <Route path="/:category" element={<PosterList filterDate={filterDate} filterLocations={filterLocations} filterTags={filterTags} searchQuery={searchQuery} user={user} />} />
+          <Route path="/post" element={<PosterUpload user={user} />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/edit-poster/:id" element={<EditPoster />} />
         </Routes>

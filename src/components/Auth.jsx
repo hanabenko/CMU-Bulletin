@@ -1,5 +1,6 @@
 // src/components/Auth.jsx
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../firebase';
 import {
   createUserWithEmailAndPassword,
@@ -15,6 +16,7 @@ function Auth() {
   const [organization, setOrganization] = useState('');
   const [isSignUp, setIsSignUp] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignUp = async () => {
     if (!firstName || !lastName) {
@@ -31,6 +33,7 @@ function Auth() {
         organization,
         email,
       });
+      navigate('/'); // Redirect to homepage
     } catch (err) {
       console.error("Firebase Auth Error:", err);
       setError(err.message);

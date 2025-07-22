@@ -96,13 +96,26 @@ function PosterList({ filterDate, filterLocations, filterTags, searchQuery, user
   const { category } = useParams();
 
   useEffect(() => {
-    const q = query(collection(db, 'posters'), orderBy('created_at', 'desc'));
+    const q = query(collection(db, 'posters'));
 
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const postersData = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
-      }));
+      })).sort((a, b) => {
+        const dateA = a.sort_date || (a.repeating ? a.next_occurring_date : a.single_event_date);
+        const dateB = b.sort_date || (b.repeating ? b.next_occurring_date : b.single_event_date);
+
+        const compareDates = new Date(dateA) - new Date(dateB);
+        if (compareDates !== 0) {
+          return compareDates;
+        }
+
+        // If dates are the same, sort by created_at (oldest first)
+        const createdAtA = a.created_at ? a.created_at.toDate() : new Date(0);
+        const createdAtB = b.created_at ? b.created_at.toDate() : new Date(0);
+        return createdAtA - createdAtB;
+      });
       setAllPosters(postersData);
 
       const uploaderIds = [...new Set(postersData.map(p => p.uploaded_by))];
